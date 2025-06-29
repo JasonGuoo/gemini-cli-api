@@ -18,6 +18,19 @@ By doing this, any application, script, or service that is already designed to w
 -   **Streaming Support:** Supports real-time, streamed responses for interactive applications.
 -   **Concurrent Requests:** Utilizes a process pool to handle multiple API requests simultaneously.
 
+## Why Use This for Development?
+
+The primary advantage of this project is for **development and prototyping**.
+
+Google's Gemini models, such as **Gemini 2.5 Pro**, offer a very generous **free tier** for Gemini-cli. However, integrating with the native Google AI API requires using its specific SDKs and data formats.
+
+This project acts as a bridge, giving you the best of both worlds:
+-   **Zero-Cost Development:** You can develop and test your AI-powered applications without incurring API costs by leveraging the Gemini free tier.
+-   **Instant Compatibility:** You can use the vast ecosystem of tools, libraries, and applications that are built for the OpenAI API. Simply change the base URL to point to this local server, and your existing code will work.
+-   **Production-Ready Path:** Develop for free using this server, and when you're ready to go to production, you can switch to a paid OpenAI model or a dedicated Gemini API endpoint by simply changing the API key and URL, with no other code modifications.
+
+It's the ideal solution for developers who want to build on the OpenAI API standard without the cost, using the power of Gemini models.
+
 ## Limitations
 
 Using `gemini-cli` as a backend for an API server introduces several important limitations that users should be aware of:
