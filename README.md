@@ -14,12 +14,11 @@ This project provides a **RESTful API compatible with the OpenAI API specificati
 
 A key differentiator of this project is its ability to utilize the **generous free tier** offered by Google AI Studio (which `gemini-cli` accesses). This provides a significant advantage for development and prototyping:
 
-| Feature             | Gemini CLI (via Google AI Studio Free Tier) | Direct Gemini API (Paid Tier) |
-| :------------------ | :------------------------------------------ | :---------------------------- |
-| **Cost**            | Free                                        | Pay-as-you-go (usage-based)   |
-| **Requests/Minute** | Up to 2 RPM                                 | Significantly higher          |
-| **Tokens/Minute**   | Up to 32,000 TPM                            | Significantly higher          |
-| **Requests/Day**    | Up to 50 RPD                                | Significantly higher          |
+| Feature                     | Gemini CLI (via Google AI Studio Free Tier) | Direct Gemini API (Paid Tier) |
+| :-------------------------- | :------------------------------------------ | :---------------------------- |
+| **Cost**                    | Free                                        | Pay-as-you-go (usage-based)   |
+| **Requests per user per minute** | 120                                         | Significantly higher          |
+| **Requests per user per day**    | 1000 (Individuals), 1500 (Standard)         | Significantly higher          |
 
 This means you can develop and extensively test your AI-powered applications without incurring API costs, making it an ideal solution for:
 
@@ -27,14 +26,7 @@ This means you can develop and extensively test your AI-powered applications wit
 -   **Instant Compatibility:** Seamlessly integrate with the vast ecosystem of OpenAI-compatible tools and libraries by simply changing the API base URL.
 -   **Production-Ready Path:** Develop for free, and easily transition to a paid OpenAI model or direct Gemini API integration for production by updating API keys and URLs, without major code refactoring.
 
-## Why Use This for Development?
 
-This project acts as a bridge, giving you the best of both worlds:
--   **Zero-Cost Development:** You can develop and test your AI-powered applications without incurring API costs by leveraging the Gemini free tier through `gemini-cli`.
--   **Instant Compatibility:** You can use the vast ecosystem of tools, libraries, and applications that are built for the OpenAI API. Simply change the base URL to point to this local server, and your existing code will work.
--   **Production-Ready Path:** Develop for free using this server, and when you're ready to go to production, you can switch to a paid OpenAI model or a dedicated Gemini API endpoint by simply changing the API key and URL, with no other code modifications.
-
-It's the ideal solution for developers who want to build on the OpenAI API standard without the cost, using the power of Gemini models.
 
 ### Key Features
 -   **OpenAI API Compatibility:** Exposes a `/v1/chat/completions` endpoint that mimics the OpenAI standard.
