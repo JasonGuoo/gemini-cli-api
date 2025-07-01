@@ -1,5 +1,9 @@
 # Gemini CLI API
 
+**⚠️ This project is currently under active development and is not yet ready for production use. ⚠️**
+
+This project provides a **RESTful API compatible with the OpenAI API specification**, by wrapping the `gemini-cli` tool. This allows developers to leverage Google's powerful Gemini models using existing OpenAI-compatible applications and libraries, with minimal to no code changes.
+
 ## Prerequisites
 
 Before running this server, you must have the `gemini-cli` tool installed, and its executable command, `gemini`, must be available in your system's `PATH`. You can find installation instructions [here](https://github.com/GoogleCloudPlatform/generative-ai/tree/main/gemini/cli).
@@ -29,11 +33,6 @@ curl -X POST http://localhost:8000/v1/chat/completions \
   -d '{ "model": "gemini-2.5-flash", "messages": [{"role": "user", "content": "Hello, how are you today?"}], "stream": false }'
 ```
 
-## What is this project?
-
-
-This project provides a **RESTful API compatible with the OpenAI API specification**, by wrapping the `gemini-cli` tool. This allows developers to leverage Google's powerful Gemini models using existing OpenAI-compatible applications and libraries, with minimal to no code changes.
-
 ### The Free Tier Advantage: Gemini CLI vs. Gemini API
 
 A key differentiator of this project is its ability to utilize the **generous free tier** offered by Google AI Studio (which `gemini-cli` accesses). This provides a significant advantage for development and prototyping:
@@ -49,8 +48,6 @@ This means you can develop and extensively test your AI-powered applications wit
 -   **Zero-Cost Development:** Build and test applications leveraging Gemini models without spending money on API calls.
 -   **Instant Compatibility:** Seamlessly integrate with the vast ecosystem of OpenAI-compatible tools and libraries by simply changing the API base URL.
 -   **Production-Ready Path:** Develop for free, and easily transition to a paid OpenAI model or direct Gemini API integration for production by updating API keys and URLs, without major code refactoring.
-
-
 
 ### Key Features
 -   **OpenAI API Compatibility:** Exposes a `/v1/chat/completions` endpoint that mimics the OpenAI standard.
