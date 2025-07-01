@@ -1,5 +1,7 @@
 # Gemini CLI API
 
+[简体中文](README.zh-CN.md) | [日本語](README.ja-JP.md)
+
 
 This project provides a **RESTful API compatible with the OpenAI API specification**, by wrapping the `gemini-cli` tool. This allows developers to leverage Google's powerful Gemini models using existing OpenAI-compatible applications and libraries, with minimal to no code changes.
 
@@ -99,4 +101,11 @@ DEBUG_DUMP_DIR=./debug_dumps
 # Enable/disable verbose console logging from the server.
 CONSOLE_OUTPUT_ENABLED=true
 CONSOLE_OUTPUT_VERBOSE=true
+
+# Proxy Settings:
+# If you are behind a proxy, set the HTTPS_PROXY environment variable.
+# This can be set before starting the server or in this .env file.
+# Example: HTTPS_PROXY=http://your.proxy.server:port
+# HTTPS_PROXY=
+
 ```
