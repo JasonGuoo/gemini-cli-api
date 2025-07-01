@@ -1,6 +1,5 @@
 # Gemini CLI API
 
-**⚠️ This project is currently under active development and is not yet ready for production use. ⚠️**
 
 This project provides a **RESTful API compatible with the OpenAI API specification**, by wrapping the `gemini-cli` tool. This allows developers to leverage Google's powerful Gemini models using existing OpenAI-compatible applications and libraries, with minimal to no code changes.
 
