@@ -6,6 +6,55 @@
 
 Before running this server, you must have the `gemini-cli` tool installed, and its executable command, `gemini`, must be available in your system's `PATH`.
 
+## What is this project?
+
+This project provides a **RESTful API compatible with the OpenAI API specification**, by wrapping the `gemini-cli` tool. This allows developers to leverage Google's powerful Gemini models using existing OpenAI-compatible applications and libraries, with minimal to no code changes.
+
+### The Free Tier Advantage: Gemini CLI vs. Gemini API
+
+A key differentiator of this project is its ability to utilize the **generous free tier** offered by Google AI Studio (which `gemini-cli` accesses). This provides a significant advantage for development and prototyping:
+
+| Feature             | Gemini CLI (via Google AI Studio Free Tier) | Direct Gemini API (Paid Tier) |
+| :------------------ | :------------------------------------------ | :---------------------------- |
+| **Cost**            | Free                                        | Pay-as-you-go (usage-based)   |
+| **Requests/Minute** | Up to 2 RPM                                 | Significantly higher          |
+| **Tokens/Minute**   | Up to 32,000 TPM                            | Significantly higher          |
+| **Requests/Day**    | Up to 50 RPD                                | Significantly higher          |
+
+This means you can develop and extensively test your AI-powered applications without incurring API costs, making it an ideal solution for:
+
+-   **Zero-Cost Development:** Build and test applications leveraging Gemini models without spending money on API calls.
+-   **Instant Compatibility:** Seamlessly integrate with the vast ecosystem of OpenAI-compatible tools and libraries by simply changing the API base URL.
+-   **Production-Ready Path:** Develop for free, and easily transition to a paid OpenAI model or direct Gemini API integration for production by updating API keys and URLs, without major code refactoring.
+
+## Why Use This for Development?
+
+This project acts as a bridge, giving you the best of both worlds:
+-   **Zero-Cost Development:** You can develop and test your AI-powered applications without incurring API costs by leveraging the Gemini free tier through `gemini-cli`.
+-   **Instant Compatibility:** You can use the vast ecosystem of tools, libraries, and applications that are built for the OpenAI API. Simply change the base URL to point to this local server, and your existing code will work.
+-   **Production-Ready Path:** Develop for free using this server, and when you're ready to go to production, you can switch to a paid OpenAI model or a dedicated Gemini API endpoint by simply changing the API key and URL, with no other code modifications.
+
+It's the ideal solution for developers who want to build on the OpenAI API standard without the cost, using the power of Gemini models.
+
+### Key Features
+-   **OpenAI API Compatibility:** Exposes a `/v1/chat/completions` endpoint that mimics the OpenAI standard.
+-   **Stateless Interaction:** Each API call invokes a new `gemini --prompt` process, ensuring each request is handled in a completely stateless manner.
+-   **Streaming Support:** Supports real-time, streamed responses for interactive applications, optimized for multi-language content.
+
+## Limitations
+
+Using `gemini-cli` as a backend for an API server introduces several important limitations that users should be aware of:
+
+1.  **Ignored API Parameters:** The `gemini-cli` tool does not support all the parameters available in the official OpenAI Chat Completions API. As a result, parameters like `temperature`, `top_p`, `n`, `stop`, `max_tokens`, `presence_penalty`, `frequency_penalty`, and `logit_bias` will be **accepted but ignored**.
+
+2.  **Model Selection:** The `model` parameter in the API request (`POST /v1/chat/completions`) is used to select the Gemini model. Currently, only `gemini-2.5-flash` and `gemini-2.5-pro` are explicitly supported. If an unsupported model is requested, the server will fall back to the `DEFAULT_GEMINI_MODEL` configured in your `.env` file.
+
+3.  **Token Usage:** The `gemini-cli` does not provide token usage information when using the `--prompt` flag. Therefore, the `usage` field in the API response will always be `null`.
+
+4.  **Performance:** Each API call involves spawning a new command-line subprocess, which introduces more overhead and latency compared to a native API integration.
+
+5.  **Error Handling:** Errors are directly dependent on the output and exit codes of the `gemini` subprocess, which may be less structured or detailed than native API errors.
+
 ## Configuration
 
 This server leverages environment variables for its configuration, which can be conveniently managed using a `.env` file in the project root. When the server starts, it automatically loads these variables, making them accessible to both the FastAPI application and the underlying `gemini` CLI processes.
@@ -39,41 +88,3 @@ DEBUG_DUMP_DIR=./debug_dumps
 CONSOLE_OUTPUT_ENABLED=true
 CONSOLE_OUTPUT_VERBOSE=true
 ```
-
-## What is this project?
-
-This project wraps the `gemini` command in a RESTful API server. The primary goal is to make the functionality of `gemini-cli` available over a network interface that is **compatible with the OpenAI API specification**.
-
-By doing this, any application, script, or service that is already designed to work with the OpenAI API (e.g., for `gpt-3.5-turbo` or `gpt-4`) can be pointed at this server to use Google's Gemini models instead, with minimal to no code changes.
-
-### Key Features
--   **OpenAI API Compatibility:** Exposes a `/v1/chat/completions` endpoint that mimics the OpenAI standard.
--   **Stateless Interaction:** Each API call invokes a new `gemini --prompt` process, ensuring each request is handled in a completely stateless manner.
--   **Streaming Support:** Supports real-time, streamed responses for interactive applications, optimized for multi-language content.
-
-## Why Use This for Development?
-
-The primary advantage of this project is for **development and prototyping**.
-
-Google's Gemini models, such as **Gemini 1.5 Pro**, offer a very generous **free tier** for API access. However, integrating with the native Google AI API requires using its specific SDKs and data formats.
-
-This project acts as a bridge, giving you the best of both worlds:
--   **Zero-Cost Development:** You can develop and test your AI-powered applications without incurring API costs by leveraging the Gemini free tier.
--   **Instant Compatibility:** You can use the vast ecosystem of tools, libraries, and applications that are built for the OpenAI API. Simply change the base URL to point to this local server, and your existing code will work.
--   **Production-Ready Path:** Develop for free using this server, and when you're ready to go to production, you can switch to a paid OpenAI model or a dedicated Gemini API endpoint by simply changing the API key and URL, with no other code modifications.
-
-It's the ideal solution for developers who want to build on the OpenAI API standard without the cost, using the power of Gemini models.
-
-## Limitations
-
-Using `gemini-cli` as a backend for an API server introduces several important limitations that users should be aware of:
-
-1.  **Ignored API Parameters:** The `gemini-cli` tool does not support all the parameters available in the official OpenAI Chat Completions API. As a result, parameters like `temperature`, `top_p`, `n`, `stop`, `max_tokens`, `presence_penalty`, `frequency_penalty`, and `logit_bias` will be **accepted but ignored**.
-
-2.  **Model Selection:** The `model` parameter in the API request (`POST /v1/chat/completions`) is used to select the Gemini model. Currently, only `gemini-2.5-flash` and `gemini-2.5-pro` are explicitly supported. If an unsupported model is requested, the server will fall back to the `DEFAULT_GEMINI_MODEL` configured in your `.env` file.
-
-3.  **Token Usage:** The `gemini-cli` does not provide token usage information when using the `--prompt` flag. Therefore, the `usage` field in the API response will always be `null`.
-
-4.  **Performance:** Each API call involves spawning a new command-line subprocess, which introduces more overhead and latency compared to a native API integration.
-
-5.  **Error Handling:** Errors are directly dependent on the output and exit codes of the `gemini` subprocess, which may be less structured or detailed than native API errors.
