@@ -58,9 +58,10 @@ It's the ideal solution for developers who want to build on the OpenAI API stand
 Using `gemini-cli` as a backend for an API server introduces several important limitations that users should be aware of:
 
 1.  **Ignored API Parameters:** The `gemini-cli` tool does not support all the parameters available in the official OpenAI Chat Completions API. As a result, the following parameters in your API calls will be **accepted but ignored**:
-    *   `model` (The underlying Gemini model is configured in the `gemini-cli` tool itself).
     *   `temperature`, `top_p`, `n`, `stop`, `max_tokens`, `presence_penalty`, `frequency_penalty`, `logit_bias`, etc.
     The API will simply pass the prompt to `gemini` and return whatever it generates based on its own internal settings.
+
+2.  **Model Selection:** The `model` parameter in the API request (`POST /v1/chat/completions`) is used to select the Gemini model. Currently, only `gemini-2.5-flash` and `gemini-2.5-pro` are supported. If an unsupported model is requested, the server will fall back to the default model configured in `DEFAULT_GEMINI_MODEL` in your `.env` file (defaulting to `gemini-2.5-flash`).
 
 2.  **Token Usage:** The `gemini-cli` does not provide token usage information when using the `--prompt` flag. Therefore, the `usage` field in the API response will not be populated.
 

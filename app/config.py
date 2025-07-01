@@ -15,7 +15,8 @@ if not GEMINI_CLI_PATH:
         "Please ensure the gemini-cli tool is installed and accessible."
     )
 
-
+# Default Gemini model configuration
+DEFAULT_GEMINI_MODEL = os.getenv("DEFAULT_GEMINI_MODEL", "gemini-2.5-flash")
 
 # Debugging feature configuration
 DEBUG_DUMP_ENABLED = os.getenv("DEBUG_DUMP_ENABLED", "False").lower() == "true"
