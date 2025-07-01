@@ -1,7 +1,5 @@
 # Gemini CLI API
 
-**⚠️ This project is currently under active development and is not yet ready for production use. ⚠️**
-
 ## Prerequisites
 
 Before running this server, you must have the `gemini-cli` tool installed, and its executable command, `gemini`, must be available in your system's `PATH`. You can find installation instructions [here](https://github.com/GoogleCloudPlatform/generative-ai/tree/main/gemini/cli).
