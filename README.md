@@ -8,25 +8,37 @@ Before running this server, you must have the `gemini-cli` tool installed, and i
 
 ## Configuration
 
-This server passes all environment variables from its `.env` file directly to the underlying `gemini` process. To configure the CLI, create a `.env` file in the root of this project.
+This server leverages environment variables for its configuration, which can be conveniently managed using a `.env` file in the project root. When the server starts, it automatically loads these variables, making them accessible to both the FastAPI application and the underlying `gemini` CLI processes.
 
-For example, to set your Gemini API key, your `.env` file should contain:
+Here are some key configuration options you can set in your `.env` file:
 
-```
+```dotenv
+# Your Gemini API key (required for gemini-cli to function)
 GEMINI_API_KEY=your_api_key_here
+
+# Your Google Cloud Project ID (if gemini-cli requires it)
+# GOOGLE_CLOUD_PROJECT=your_project_id
+
+# Server Port: The port on which the FastAPI server will listen.
+# Defaults to 8000 if not specified.
+PORT=8000
+
+# Default Gemini Model: The model to use if the client does not specify a supported model
+# or specifies an invalid one. Supported values are "gemini-2.5-flash" or "gemini-2.5-pro".
+# Defaults to "gemini-2.5-flash".
+DEFAULT_GEMINI_MODEL=gemini-2.5-flash
+
+# Debugging Features:
+# Enable/disable dumping of request/response data for debugging purposes.
+DEBUG_DUMP_ENABLED=false
+# Directory where debug dumps will be stored.
+DEBUG_DUMP_DIR=./debug_dumps
+
+# Console Output:
+# Enable/disable verbose console logging from the server.
+CONSOLE_OUTPUT_ENABLED=true
+CONSOLE_OUTPUT_VERBOSE=true
 ```
-
-Any other configuration supported by `gemini-cli` via environment variables can be set in the same way.
-
-### Port Configuration
-
-By default, the server runs on port 8000. You can change this by setting the `PORT` variable in your `.env` file:
-
-```
-PORT=8080
-```
-
-
 
 ## What is this project?
 
@@ -37,8 +49,7 @@ By doing this, any application, script, or service that is already designed to w
 ### Key Features
 -   **OpenAI API Compatibility:** Exposes a `/v1/chat/completions` endpoint that mimics the OpenAI standard.
 -   **Stateless Interaction:** Each API call invokes a new `gemini --prompt` process, ensuring each request is handled in a completely stateless manner.
--   **Streaming Support:** Supports real-time, streamed responses for interactive applications.
-
+-   **Streaming Support:** Supports real-time, streamed responses for interactive applications, optimized for multi-language content.
 
 ## Why Use This for Development?
 
@@ -57,14 +68,12 @@ It's the ideal solution for developers who want to build on the OpenAI API stand
 
 Using `gemini-cli` as a backend for an API server introduces several important limitations that users should be aware of:
 
-1.  **Ignored API Parameters:** The `gemini-cli` tool does not support all the parameters available in the official OpenAI Chat Completions API. As a result, the following parameters in your API calls will be **accepted but ignored**:
-    *   `temperature`, `top_p`, `n`, `stop`, `max_tokens`, `presence_penalty`, `frequency_penalty`, `logit_bias`, etc.
-    The API will simply pass the prompt to `gemini` and return whatever it generates based on its own internal settings.
+1.  **Ignored API Parameters:** The `gemini-cli` tool does not support all the parameters available in the official OpenAI Chat Completions API. As a result, parameters like `temperature`, `top_p`, `n`, `stop`, `max_tokens`, `presence_penalty`, `frequency_penalty`, and `logit_bias` will be **accepted but ignored**.
 
-2.  **Model Selection:** The `model` parameter in the API request (`POST /v1/chat/completions`) is used to select the Gemini model. Currently, only `gemini-2.5-flash` and `gemini-2.5-pro` are supported. If an unsupported model is requested, the server will fall back to the default model configured in `DEFAULT_GEMINI_MODEL` in your `.env` file (defaulting to `gemini-2.5-flash`).
+2.  **Model Selection:** The `model` parameter in the API request (`POST /v1/chat/completions`) is used to select the Gemini model. Currently, only `gemini-2.5-flash` and `gemini-2.5-pro` are explicitly supported. If an unsupported model is requested, the server will fall back to the `DEFAULT_GEMINI_MODEL` configured in your `.env` file.
 
-2.  **Token Usage:** The `gemini-cli` does not provide token usage information when using the `--prompt` flag. Therefore, the `usage` field in the API response will not be populated.
+3.  **Token Usage:** The `gemini-cli` does not provide token usage information when using the `--prompt` flag. Therefore, the `usage` field in the API response will always be `null`.
 
-3.  **Performance:** Each API call involves interacting with a command-line subprocess, which introduces more overhead than a native API integration.
+4.  **Performance:** Each API call involves spawning a new command-line subprocess, which introduces more overhead and latency compared to a native API integration.
 
-4.  **Error Handling:** Errors will be dependent on the output of the `gemini` subprocess, which may be less structured than native API errors.
+5.  **Error Handling:** Errors are directly dependent on the output and exit codes of the `gemini` subprocess, which may be less structured or detailed than native API errors.
