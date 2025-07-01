@@ -18,6 +18,16 @@ GEMINI_API_KEY=your_api_key_here
 
 Any other configuration supported by `gemini-cli` via environment variables can be set in the same way.
 
+### Port Configuration
+
+By default, the server runs on port 8000. You can change this by setting the `PORT` variable in your `.env` file:
+
+```
+PORT=8080
+```
+
+
+
 ## What is this project?
 
 This project wraps the `gemini` command in a RESTful API server. The primary goal is to make the functionality of `gemini-cli` available over a network interface that is **compatible with the OpenAI API specification**.
@@ -26,9 +36,9 @@ By doing this, any application, script, or service that is already designed to w
 
 ### Key Features
 -   **OpenAI API Compatibility:** Exposes a `/v1/chat/completions` endpoint that mimics the OpenAI standard.
--   **Stateless Interaction:** Manages underlying `gemini` processes to ensure each API call is treated as a separate, stateless conversation.
+-   **Stateless Interaction:** Each API call invokes a new `gemini --prompt` process, ensuring each request is handled in a completely stateless manner.
 -   **Streaming Support:** Supports real-time, streamed responses for interactive applications.
--   **Concurrent Requests:** Utilizes a process pool to handle multiple API requests simultaneously.
+
 
 ## Why Use This for Development?
 
@@ -52,7 +62,7 @@ Using `gemini-cli` as a backend for an API server introduces several important l
     *   `temperature`, `top_p`, `n`, `stop`, `max_tokens`, `presence_penalty`, `frequency_penalty`, `logit_bias`, etc.
     The API will simply pass the prompt to `gemini` and return whatever it generates based on its own internal settings.
 
-2.  **Token Usage:** Token count information (`prompt_tokens`, `completion_tokens`, `total_tokens`) is retrieved by running a separate `/stats` command within the CLI after a response is generated. While this provides a good estimate, it may not be perfectly analogous to the official OpenAI API's token accounting.
+2.  **Token Usage:** The `gemini-cli` does not provide token usage information when using the `--prompt` flag. Therefore, the `usage` field in the API response will not be populated.
 
 3.  **Performance:** Each API call involves interacting with a command-line subprocess, which introduces more overhead than a native API integration.
 

@@ -15,9 +15,15 @@ if not GEMINI_CLI_PATH:
         "Please ensure the gemini-cli tool is installed and accessible."
     )
 
+
+
 # Debugging feature configuration
 DEBUG_DUMP_ENABLED = os.getenv("DEBUG_DUMP_ENABLED", "False").lower() == "true"
 DEBUG_DUMP_DIR = os.getenv("DEBUG_DUMP_DIR", "./debug_dumps")
+
+# Console output configuration
+CONSOLE_OUTPUT_ENABLED = os.getenv("CONSOLE_OUTPUT_ENABLED", "True").lower() == "true"
+CONSOLE_OUTPUT_VERBOSE = os.getenv("CONSOLE_OUTPUT_VERBOSE", "True").lower() == "true"
 
 # Ensure the debug dump directory exists if debugging is enabled
 if DEBUG_DUMP_ENABLED and not os.path.exists(DEBUG_DUMP_DIR):
