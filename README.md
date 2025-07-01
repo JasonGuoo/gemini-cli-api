@@ -4,9 +4,35 @@
 
 ## Prerequisites
 
-Before running this server, you must have the `gemini-cli` tool installed, and its executable command, `gemini`, must be available in your system's `PATH`.
+Before running this server, you must have the `gemini-cli` tool installed, and its executable command, `gemini`, must be available in your system's `PATH`. You can find installation instructions [here](https://github.com/GoogleCloudPlatform/generative-ai/tree/main/gemini/cli).
+
+## Getting Started
+
+To start the API server, simply run the provided shell script:
+
+```bash
+./start_server.sh
+```
+
+This script will:
+1.  Load environment variables from your `.env` file (if present).
+2.  Perform a quick check to ensure the `gemini` CLI is accessible.
+3.  Start the FastAPI application using `uvicorn`.
+
+The server will typically run on `http://localhost:8000` (or the port specified in your `.env` file). You can then access the API documentation at `http://localhost:8000/docs`.
+
+### Quick Start Example
+
+Once the server is running, you can make a chat completion request using `curl`:
+
+```bash
+curl -X POST http://localhost:8000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{ "model": "gemini-2.5-flash", "messages": [{"role": "user", "content": "Hello, how are you today?"}], "stream": false }'
+```
 
 ## What is this project?
+
 
 This project provides a **RESTful API compatible with the OpenAI API specification**, by wrapping the `gemini-cli` tool. This allows developers to leverage Google's powerful Gemini models using existing OpenAI-compatible applications and libraries, with minimal to no code changes.
 
